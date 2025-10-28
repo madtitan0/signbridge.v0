@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SignBridge | Start Learning</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f2f2ff;
+      color: #232021;
+    }
+
+    /* Top right fixed menu with blue theme, no yellow */
+    .top-right-menu {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      z-index: 1000;
+      font-size: 0.97rem;
+    }
+    .top-right-menu a {
+      background: transparent;
+      border: none;
+      color: #183b56;
+      text-decoration: none;
+      padding: 8px 18px;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: background 0.2s, color 0.2s;
+      cursor: pointer;
+      font-size: 1rem;
+      letter-spacing: 0.01em;
+    }
+    .top-right-menu a:hover,
+    .top-right-menu a:focus {
+      background: #d9e9f7;
+      color: #0f2a46;
+      outline: none;
+    }
+
+    /* Hero section */
+    .learning-hero {
+      background: linear-gradient(120deg, #4ca1af 0%, #c4e0e5 100%);
+      border-bottom-left-radius: 60px;
+      border-bottom-right-radius: 60px;
+      min-height: 190px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 18px 30px 18px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    .learning-hero-content {
+      max-width: 750px;
+      margin: 0 auto;
+      color: #183b56;
+    }
+    .learning-hero-title {
+      font-size: 2.4rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .learning-hero-sub {
+      color: #274469;
+      font-size: 1.21rem;
+      letter-spacing: .01em;
+      margin-bottom: 13px;
+    }
+
+    /* Option grid */
+    .learning-options-section {
+      margin: 54px auto 38px auto;
+      background: #fff;
+      border-radius: 30px;
+      box-shadow: 0 7px 40px #b2b5ed22;
+      max-width: 950px;
+      padding: 38px 20px 34px 20px;
+    }
+    .learning-options-title {
+      font-size: 1.51rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 30px;
+      color: #2e6c8c;
+      letter-spacing: 0.01em;
+    }
+    .learning-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(258px, 1fr));
+      gap: 33px 30px;
+      max-width: 900px;
+      margin: 0 auto 7px auto;
+      padding: 0 5px;
+    }
+    .learning-card {
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: 0 8px 32px #ffd60022, 0 2px 12px #b2b5ed19;
+      padding: 30px 25px 28px 25px;
+      border-left: 7px solid #ffd600; /* Always yellow on left */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 285px;
+      transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      color: #183b56;
+      position: relative;
+      overflow: hidden;
+    }
+    .learning-card:hover, .learning-card:active {
+      box-shadow: 0 16px 48px #109fdc35, 0 2px 18px #ffc4000c;
+      transform: translateY(-8px) scale(1.05);
+      background: #fff; /* Card stays white, no yellow on hover */
+      z-index: 2;
+    }
+    .learning-card-icon {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffd600 60%, #c4e0e5 100%);
+      box-shadow: 0 0 0 6px #ffd60055;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.6rem;
+      color: #183b56;
+      transition: transform 0.16s, box-shadow 0.16s, background 0.16s;
+    }
+    .learning-card:hover .learning-card-icon,
+    .learning-card:active .learning-card-icon {
+      transform: scale(1.11) rotate(-8deg);
+      box-shadow: 0 0 0 10px #ffd60022;
+      background: linear-gradient(135deg, #ffd600 70%, #e7f8ff 100%);
+    }
+    .learning-card h3 {
+      margin: 0 0 13px 0;
+      font-size: 1.17rem;
+      font-weight: 700;
+      color: #287ac6;
+      text-align: center;
+      letter-spacing: 0.01em;
+    }
+    .learning-card p {
+      color: #474f59bb;
+      font-size: 1.08rem;
+      margin: 0;
+      flex: 1;
+      text-align: center;
+    }
+    @media (max-width: 700px) {
+      .learning-card-grid { grid-template-columns: 1fr; }
+      .learning-card { min-height: 220px; padding: 22px 10vw;}
+    }
+    @media (max-width: 970px) {
+      .learning-hero-title { font-size: 2rem; }
+      .learning-hero { min-height: unset; }
+      .learning-card-grid { grid-template-columns: 1fr;}
+      .learning-card {min-width: 80vw;max-width:99vw;}
+    }
+    @media (max-width: 550px) {
+      .learning-hero,
+      .learning-options-section { padding: 14px 4vw !important;}
+      .learning-hero-title { font-size: 1.45rem; }
+      .learning-card { padding: 14px 5vw;}
+      .learning-card-icon {width:60px;height:60px;font-size:2rem;}
+    }
+    footer {
+      margin: 55px 0 16px 0;
+      color: #84a1b7;
+      font-size: .95rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top right blue-themed navigation, no yellow, no borders -->
+  <nav class="top-right-menu" aria-label="Main Navigation">
+    <a href="index.html">Home</a>
+    <a href="#services">Our Services</a>
+    <a href="#about">About Us</a>
+    <a href="#support">Get Support</a>
+  </nav>
+
+  <!-- Learning Hero Banner -->
+  <section class="learning-hero">
+    <div class="learning-hero-content">
+      <div class="learning-hero-title">Let's Start Learning Sign Language!</div>
+      <div class="learning-hero-sub">
+        Choose your path: learn alphabets, try common phrases, or play quiz mode.<br>
+        Select an option to get started.
+      </div>
+    </div>
+  </section>
+
+  <!-- Learning Options Section -->
+  <section class="learning-options-section">
+    <div class="learning-options-title">Pick a Learning Module</div>
+    <div class="learning-card-grid">
+      <!-- Alphabets -->
+      <a href="alpha.html" class="learning-card">
+        <span class="learning-card-icon" aria-label="A-Z">🔤</span>
+        <h3>Alphabets (A-Z)</h3>
+        <p>Master each alphabet in sign language! Practice finger-spelling with visual guides, audio, and quick drills.</p>
+      </a>
+      <!-- Common Phrases -->
+      <a href="phrases.html" class="learning-card">
+        <span class="learning-card-icon" aria-label="Phrase">💬</span>
+        <h3>Common Phrases</h3>
+        <p>Learn and practice greetings, questions, responses, and everyday phrases for real conversations.</p>
+      </a>
+      <!-- Quiz Mode -->
+      <a href="quiz mode.html" class="learning-card">
+        <span class="learning-card-icon" aria-label="Quiz">📝</span>
+        <h3>Quiz Mode</h3>
+        <p>Test your sign language knowledge! Interactive quizzes with instant feedback and motivation.</p>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 SignBridge | Empowering Communication for All
+  </footer>
+</body>
+</html>

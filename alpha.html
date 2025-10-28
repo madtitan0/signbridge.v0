@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SignBridge | A–Z Alphabet Learning</title>
+  <style>
+    * { box-sizing: border-box; }
+    body, html {
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(120deg, #c4e0e5 0%, #4ca1af 100%);
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      margin: 38px 0 18px;
+      text-align: center;
+      max-width: 900px;
+      padding: 0 6vw;
+    }
+    header h1 {
+      color: #183b56;
+      font-size: 2.4rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+    }
+    header p {
+      color: #284774;
+      font-size: 1.15rem;
+      margin: 0;
+    }
+    main.alphabet-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 34px;
+      width: 94vw;
+      max-width: 1100px;
+      padding: 24px 4vw 52px 4vw;
+      box-sizing: border-box;
+    }
+    .alpha-card {
+      background: #fff;
+      border-radius: 26px;
+      box-shadow: 0 7px 30px rgba(46, 108, 140, 0.17);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 38px 10px 28px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      user-select: none;
+      min-height: 210px;
+    }
+    .alpha-card:hover, .alpha-card:focus {
+      transform: translateY(-10px) scale(1.07);
+      box-shadow: 0 14px 42px rgba(46, 108, 140, 0.25);
+      background: #f6fafc;
+      outline: 2.5px solid #ffd600;
+    }
+    .alpha-img {
+      width: 108px;
+      height: 108px;
+      background: #e7f8ff;
+      border-radius: 22px;
+      box-shadow: 0 3px 13px #d6c27433;
+      margin-bottom: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    .alpha-img img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      display: block;
+      user-drag: none;
+      user-select: none;
+      pointer-events: none;
+    }
+    .alpha-letter {
+      font-size: 2.6rem;
+      color: #ffd600;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      user-select: none;
+    }
+    /* Modal styles remain unchanged */
+    #video-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+    }
+    #video-modal.active {
+      display: flex;
+    }
+    #video-modal .modal-content {
+      position: relative;
+      background: #fff;
+      padding: 22px 17px 20px 17px;
+      border-radius: 22px;
+      max-width: 440px;
+      width: 99vw;
+      box-shadow: 0 8px 42px #183b568a;
+      animation: fadeInZoom 0.32s;
+    }
+    @keyframes fadeInZoom {
+      0% { opacity: 0; transform: scale(0.85);}
+      100% { opacity: 1; transform: scale(1);}
+    }
+    #modal-title {
+      color: #183b56;
+      margin-bottom: 12px;
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: .01em;
+    }
+    #sign-video {
+      width: 100%;
+      border-radius: 14px;
+      background: #f3f7fa;
+    }
+    #close-modal {
+      position: absolute;
+      top: 10px; right: 14px;
+      font-size: 25px; color: #183b56;
+      background: none; border: none; cursor: pointer;
+      transition: color 0.15s;
+    }
+    #close-modal:hover, #close-modal:focus { color: #ffd600; }
+    @media (max-width: 950px) {
+      main.alphabet-grid {
+        max-width: 99vw;
+        gap: 24px;
+        padding: 14px 1vw 36px 1vw;
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .alpha-card { min-height: 180px; }
+      .alpha-img { width: 72px; height: 72px; margin-bottom: 14px; border-radius: 14px; }
+      .alpha-img img { width: 63px; height: 63px;}
+      .alpha-letter { font-size: 1.7rem; }
+    }
+    @media (max-width: 520px) {
+      main.alphabet-grid {
+        gap: 13px;
+        padding: 8px 1vw 20px 2vw;
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .alpha-card { padding: 12px 4px 10px; min-height: 140px;}
+      .alpha-img { width: 52px; height: 52px; margin-bottom: 6px; }
+      .alpha-img img { width: 45px; height: 45px; }
+      .alpha-letter { font-size: 1.06rem;}
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+      <h1>Sign Language A–Z Alphabet</h1>
+      <div class="intro-video-container" style="margin: 18px 0;">
+        <video width="100%" controls autoplay loop muted>
+          <source src="videos/helloo.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <p>Before moving further, please observe the general instruction for better communication and body posture. Click each card to learn the hand sign for every letter. Practice and master the fingerspelling basics!</p>
+    </header>
+
+<main class="alphabet-grid" aria-label="Sign Language Alphabet Grid">
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter A">
+    <div class="alpha-img">
+      <img src="signs/a.jpg" alt="Hand sign for letter A" draggable="false" />
+    </div>
+    <span class="alpha-letter">A</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter B">
+    <div class="alpha-img">
+      <img src="signs/b.jpg" alt="Hand sign for letter B" draggable="false" />
+    </div>
+    <span class="alpha-letter">B</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter C">
+    <div class="alpha-img">
+      <img src="signs/c.jpg" alt="Hand sign for letter C" draggable="false" />
+    </div>
+    <span class="alpha-letter">C</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter D">
+    <div class="alpha-img">
+      <img src="signs/d1.jpg" alt="Hand sign for letter D" draggable="false" />
+    </div>
+    <span class="alpha-letter">D</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter E">
+    <div class="alpha-img">
+      <img src="signs/e.jpg" alt="Hand sign for letter E" draggable="false" />
+    </div>
+    <span class="alpha-letter">E</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter F">
+    <div class="alpha-img">
+      <img src="signs/f1.avif" alt="Hand sign for letter F" draggable="false" />
+    </div>
+    <span class="alpha-letter">F</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter G">
+    <div class="alpha-img">
+      <img src="signs/g.jpg" alt="Hand sign for letter G" draggable="false" />
+    </div>
+    <span class="alpha-letter">G</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter H">
+    <div class="alpha-img">
+      <img src="signs/H.jpg" alt="Hand sign for letter H" draggable="false" />
+    </div>
+    <span class="alpha-letter">H</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter I">
+    <div class="alpha-img">
+      <img src="signs/I.jpg" alt="Hand sign for letter I" draggable="false" />
+    </div>
+    <span class="alpha-letter">I</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter J">
+    <div class="alpha-img">
+      <img src="signs/J.jpg" alt="Hand sign for letter J" draggable="false" />
+    </div>
+    <span class="alpha-letter">J</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter K">
+    <div class="alpha-img">
+      <img src="signs/K.jpg" alt="Hand sign for letter K" draggable="false" />
+    </div>
+    <span class="alpha-letter">K</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter L">
+    <div class="alpha-img">
+      <img src="signs/l1.jpeg" alt="Hand sign for letter L" draggable="false" />
+    </div>
+    <span class="alpha-letter">L</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter M">
+    <div class="alpha-img">
+      <img src="signs/m.jpg" alt="Hand sign for letter M" draggable="false" />
+    </div>
+    <span class="alpha-letter">M</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter N">
+    <div class="alpha-img">
+      <img src="signs/N.jpg" alt="Hand sign for letter N" draggable="false" />
+    </div>
+    <span class="alpha-letter">N</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter O">
+    <div class="alpha-img">
+      <img src="signs/O.jpg" alt="Hand sign for letter O" draggable="false" />
+    </div>
+    <span class="alpha-letter">O</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter P">
+    <div class="alpha-img">
+      <img src="signs/P.jpg" alt="Hand sign for letter P" draggable="false" />
+    </div>
+    <span class="alpha-letter">P</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter Q">
+    <div class="alpha-img">
+      <img src="signs/Q.jpg" alt="Hand sign for letter Q" draggable="false" />
+    </div>
+    <span class="alpha-letter">Q</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter R">
+    <div class="alpha-img">
+      <img src="signs/r1.jpeg" alt="Hand sign for letter R" draggable="false" />
+    </div>
+    <span class="alpha-letter">R</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter S">
+    <div class="alpha-img">
+      <img src="signs/S.jpg" alt="Hand sign for letter S" draggable="false" />
+    </div>
+    <span class="alpha-letter">S</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter T">
+    <div class="alpha-img">
+      <img src="signs/T.jpg" alt="Hand sign for letter T" draggable="false" />
+    </div>
+    <span class="alpha-letter">T</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter U">
+    <div class="alpha-img">
+      <img src="signs/U.jpg" alt="Hand sign for letter U" draggable="false" />
+    </div>
+    <span class="alpha-letter">U</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter V">
+    <div class="alpha-img">
+      <img src="signs/V.jpg" alt="Hand sign for letter V" draggable="false" />
+    </div>
+    <span class="alpha-letter">V</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter W">
+    <div class="alpha-img">
+      <img src="signs/W.jpg" alt="Hand sign for letter W" draggable="false" />
+    </div>
+    <span class="alpha-letter">W</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter X">
+    <div class="alpha-img">
+      <img src="signs/X.jpg" alt="Hand sign for letter X" draggable="false" />
+    </div>
+    <span class="alpha-letter">X</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter Y">
+    <div class="alpha-img">
+      <img src="signs/Y.jpg" alt="Hand sign for letter Y" draggable="false" />
+    </div>
+    <span class="alpha-letter">Y</span>
+  </div>
+  <div class="alpha-card" tabindex="0" role="button" aria-pressed="false" aria-label="Sign for letter Z">
+    <div class="alpha-img">
+      <img src="signs/Z.jpg" alt="Hand sign for letter Z" draggable="false" />
+    </div>
+    <span class="alpha-letter">Z</span>
+  </div>
+</main>
+
+<header>
+    <div class="outro-video-container" style="margin: 18px 0;">
+      <video width="100%" controls autoplay loop muted>
+        <source src="videos/a-z.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+      </video>
+    </div>
+    <p>For better hand movement, try to work on the speed and muscle memory along with this video</p>
+</header>
+
+<!-- Video Modal -->
+<div id="video-modal" aria-modal="true" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+  <div class="modal-content">
+    <button id="close-modal" aria-label="Close video">&times;</button>
+    <h3 id="modal-title">How to sign: A</h3>
+    <video id="sign-video" width="100%" controls autoplay loop muted>
+      <source src="" type="video/mp4" />
+      Your browser does not support HTML5 video.
+    </video>
+  </div>
+</div>
+
+<script>
+  // Modal logic for video playback
+  const modal = document.getElementById('video-modal');
+  const video = document.getElementById('sign-video');
+  const modalTitle = document.getElementById('modal-title');
+  const closeModalBtn = document.getElementById('close-modal');
+
+  document.querySelectorAll('.alpha-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const letter = card.querySelector('.alpha-letter').textContent.trim();
+      modalTitle.textContent = `How to sign: ${letter}`;
+      video.querySelector('source').src = `videos/${letter}.mp4`;
+      video.load();
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
+      setTimeout(() => video.play(), 250);
+    });
+    card.addEventListener('keyup', e => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        card.click();
+      }
+    });
+  });
+
+  closeModalBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+  });
+
+  function closeModal() {
+    video.pause();
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+</script>
+</body>
+</html>

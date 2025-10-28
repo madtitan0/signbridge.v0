@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SignBridge | Common Phrases</title>
+  <style>
+    * { box-sizing: border-box; }
+    body, html {
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(120deg, #c4e0e5 0%, #4ca1af 100%);
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      margin: 38px 0 18px;
+      text-align: center;
+      max-width: 900px;
+      padding: 0 6vw;
+    }
+    header h1 {
+      color: #183b56;
+      font-size: 2.4rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+    }
+    header p {
+      color: #284774;
+      font-size: 1.15rem;
+      margin: 0;
+    }
+    main.phrase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 34px;
+      width: 94vw;
+      max-width: 1100px;
+      padding: 24px 4vw 52px 4vw;
+      box-sizing: border-box;
+    }
+    .phrase-card {
+      background: #fff;
+      border-radius: 26px;
+      box-shadow: 0 7px 30px rgba(46, 108, 140, 0.17);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 38px 10px 28px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      user-select: none;
+      min-height: 210px;
+    }
+    .phrase-card:hover, .phrase-card:focus {
+      transform: translateY(-10px) scale(1.07);
+      box-shadow: 0 14px 42px rgba(46, 108, 140, 0.25);
+      background: #f6fafc;
+      outline: 2.5px solid #ffd600;
+    }
+    .phrase-img {
+      width: 108px;
+      height: 108px;
+      background: #e7f8ff;
+      border-radius: 22px;
+      box-shadow: 0 3px 13px #d6c27433;
+      margin-bottom: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    .phrase-img img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      display: block;
+      user-drag: none;
+      user-select: none;
+      pointer-events: none;
+    }
+    .phrase-label {
+      font-size: 1.19rem;
+      color: #ffd600;
+      font-weight: 900;
+      letter-spacing: 0.03em;
+      user-select: none;
+      text-align: center;
+      text-shadow: 0 1px 0 #fff;
+      margin-top: 6px;
+      margin-bottom: 0;
+      min-height: 32px;
+    }
+    #video-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+    }
+    #video-modal.active {
+      display: flex;
+    }
+    #video-modal .modal-content {
+      position: relative;
+      background: #fff;
+      padding: 22px 17px 20px 17px;
+      border-radius: 22px;
+      max-width: 440px;
+      width: 99vw;
+      box-shadow: 0 8px 42px #183b568a;
+      animation: fadeInZoom 0.32s;
+    }
+    @keyframes fadeInZoom {
+      0% { opacity: 0; transform: scale(0.85);}
+      100% { opacity: 1; transform: scale(1);}
+    }
+    #modal-title {
+      color: #183b56;
+      margin-bottom: 12px;
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: .01em;
+    }
+    #sign-video {
+      width: 100%;
+      border-radius: 14px;
+      background: #f3f7fa;
+    }
+    #close-modal {
+      position: absolute;
+      top: 10px; right: 14px;
+      font-size: 25px; color: #183b56;
+      background: none; border: none; cursor: pointer;
+      transition: color 0.15s;
+    }
+    #close-modal:hover, #close-modal:focus { color: #ffd600; }
+    @media (max-width: 950px) {
+      main.phrase-grid {
+        max-width: 99vw;
+        gap: 24px;
+        padding: 14px 1vw 36px 1vw;
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .phrase-card { min-height: 180px; }
+      .phrase-img { width: 72px; height: 72px; margin-bottom: 14px; border-radius: 14px; }
+      .phrase-img img { width: 63px; height: 63px;}
+      .phrase-label { font-size: 1.05rem; }
+    }
+    @media (max-width: 520px) {
+      main.phrase-grid {
+        gap: 13px;
+        padding: 8px 1vw 20px 2vw;
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .phrase-card { padding: 12px 4px 10px; min-height: 140px;}
+      .phrase-img { width: 52px; height: 52px; margin-bottom: 6px; }
+      .phrase-img img { width: 45px; height: 45px; }
+      .phrase-label { font-size: 0.94rem;}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1> Common Phrases</h1>
+  <p>Click each card to learn how to sign these common expressions!</p>
+</header>
+
+<main class="phrase-grid" aria-label="Sign Language Common Phrases Grid">
+  <div class="phrase-card" tabindex="0" role="button" aria-label="Sign for Sorry">
+    <div class="phrase-img">
+      <img src="phrase/sorry.jpg" alt="Hand sign for Sorry" draggable="false" />
+    </div>
+    <span class="phrase-label">Sorry</span>
+  </div>
+  <div class="phrase-card" tabindex="0" role="button" aria-label="Sign for Goodbye">
+    <div class="phrase-img">
+      <img src="phrase/good.jpg" alt="Hand sign for Goodbye" draggable="false" />
+    </div>
+    <span class="phrase-label">Goodbye</span>
+  </div>
+  <div class="phrase-card" tabindex="0" role="button" aria-label="Sign for Hello">
+    <div class="phrase-img">
+      <img src="phrase/heloo.jpg" alt="Hand sign for Hello" draggable="false" />
+    </div>
+    <span class="phrase-label">Hello</span>
+  </div>
+  <div class="phrase-card" tabindex="0" role="button" aria-label="Sign for Love">
+    <div class="phrase-img">
+      <img src="phrase/love.jpg" alt="Hand sign for Love" draggable="false" />
+    </div>
+    <span class="phrase-label">Love</span>
+  </div>
+  <div class="phrase-card" tabindex="0" role="button" aria-label="Sign for Thank you">
+    <div class="phrase-img">
+      <img src="phrase/thanks.jpg" alt="Hand sign for Thank you" draggable="false" />
+    </div>
+    <span class="phrase-label">Thankyou</span>
+  </div>
+  <div class="phrase-card" tabindex="0" role="button" aria-label="Sign for No">
+    <div class="phrase-img">
+      <img src="phrase/no.jpg" alt="Hand sign for No" draggable="false" />
+    </div>
+    <span class="phrase-label">No</span>
+  </div>
+  <div class="phrase-card" tabindex="0" role="button" aria-label="Sign for Please">
+    <div class="phrase-img">
+      <img src="phrase/please.jpg" alt="Hand sign for Please" draggable="false" />
+    </div>
+    <span class="phrase-label">Please</span>
+  </div>
+  <div class="phrase-card" tabindex="0" role="button" aria-label="Sign for Yes">
+    <div class="phrase-img">
+      <img src="phrase/yes.jpg" alt="Hand sign for Yes" draggable="false" />
+    </div>
+    <span class="phrase-label">Yes</span>
+  </div>
+  <div class="phrase-card" tabindex="0" role="button" aria-label="Sign for House">
+    <div class="phrase-img">
+      <img src="phrase/house.jpg" alt="Hand sign for House" draggable="false" />
+    </div>
+    <span class="phrase-label">House</span>
+  </div>
+  <div class="phrase-card" tabindex="0" role="button" aria-label="Sign for I love you">
+    <div class="phrase-img">
+      <img src="phrase/love you.jpg" alt="Hand sign for I love you" draggable="false" />
+    </div>
+    <span class="phrase-label">Iloveyou</span>
+  </div>
+  <div class="phrase-card" tabindex="0" role="button" aria-label="Sign for Family">
+    <div class="phrase-img">
+      <img src="phrase/family.jpg" alt="Hand sign for Family" draggable="false" />
+    </div>
+    <span class="phrase-label">Family</span>
+  </div>
+  <div class="phrase-card" tabindex="0" role="button" aria-label="Sign for Welcome">
+    <div class="phrase-img">
+      <img src="phrase/welcome.jpg" alt="Hand sign for Welcome" draggable="false" />
+    </div>
+    <span class="phrase-label">Welcome</span>
+  </div>
+</main>
+
+<!-- Video Modal -->
+<div id="video-modal" aria-modal="true" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+  <div class="modal-content">
+    <button id="close-modal" aria-label="Close video">&times;</button>
+    <h3 id="modal-title">How to sign: Phrase</h3>
+    <video id="sign-video" width="100%" controls autoplay loop muted>
+      <source src="" type="video/mp4" />
+      Your browser does not support HTML5 video.
+    </video>
+  </div>
+</div>
+
+<script>
+  // Modal logic for video playback
+  const modal = document.getElementById('video-modal');
+  const video = document.getElementById('sign-video');
+  const modalTitle = document.getElementById('modal-title');
+  const closeModalBtn = document.getElementById('close-modal');
+
+  document.querySelectorAll('.phrase-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const phrase = card.querySelector('.phrase-label').textContent.trim();
+      modalTitle.textContent = `How to sign: ${phrase}`;
+      // derive a video file name from phrase, e.g. "thank_you.mp4"
+      let videoFile = phrase.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "") + ".mp4";
+      video.querySelector('source').src = `videos/${videoFile}`;
+      video.load();
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
+      setTimeout(() => video.play(), 250);
+    });
+    card.addEventListener('keyup', e => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        card.click();
+      }
+    });
+  });
+
+  closeModalBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+  });
+
+  function closeModal() {
+    video.pause();
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+</script>
+</body>
+</html>

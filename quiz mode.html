@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SignBridge | Enhanced Quiz</title>
+  <style>
+    body, html {
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(120deg, #4ca1af 0%, #c4e0e5 100%);
+      color: #232021;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 28px 15px 40px;
+    }
+    header {
+      max-width: 700px;
+      text-align: center;
+      margin-bottom: 24px;
+      color: #183b56;
+      padding: 0 10px;
+    }
+    header h1 {
+      font-size: 2.6rem;
+      font-weight: 700;
+      margin: 0 0 12px;
+      letter-spacing: 0.03em;
+      line-height: 1.1;
+    }
+    header p {
+      font-size: 1.22rem;
+      color: #284774;
+      line-height: 1.4;
+      margin: 0;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .quiz-container {
+      background: #fff;
+      border-radius: 32px;
+      box-shadow: 0 7px 48px #b2b5ed33;
+      max-width: 600px;
+      width: 100%;
+      padding: 32px 36px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-sizing: border-box;
+    }
+    #sign-img {
+      width: 180px;
+      height: 180px;
+      object-fit: contain;
+      background: #f3f7fa;
+      border-radius: 24px;
+      box-shadow: 0 6px 22px #a4b9d7aa;
+      margin-bottom: 28px;
+      margin-top: 12px;
+      display: block;
+      transition: box-shadow 0.3s ease;
+    }
+    #sign-img:hover {
+      box-shadow: 0 8px 30px #ffd600cc;
+    }
+    #question-label {
+      font-size: 1.38rem;
+      color: #183b56;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: 0.015em;
+      max-width: 480px;
+    }
+    .progress-bar {
+      width: 90%;
+      background: #e0e8f4;
+      border-radius: 14px;
+      height: 16px;
+      margin: 0 0 24px 0;
+      overflow: hidden;
+      box-shadow: inset 0 0 5px #c4d6e5;
+      align-self: center;
+    }
+    .progress-fill {
+      height: 100%;
+      background: #ffd600;
+      width: 0%;
+      border-radius: 14px;
+      transition: width 0.3s ease;
+    }
+    .options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 22px;
+      width: 100%;
+      margin-bottom: 32px;
+      justify-items: center;
+    }
+    button.option-btn {
+      background: #e7f8ff;
+      border: 3.5px solid transparent;
+      border-radius: 28px;
+      font-size: 1.22rem;
+      font-weight: 900;
+      color: #183b56;
+      letter-spacing: 0.13em;
+      padding: 18px 0;
+      cursor: pointer;
+      transition: background 0.22s, border-color 0.28s, transform 0.18s;
+      user-select: none;
+      box-shadow: 0 0 0 0 transparent;
+      outline: none;
+      width: 100%;
+      max-width: 140px;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    button.option-btn:hover,
+    button.option-btn:focus {
+      background: #c4e0e5;
+      border-color: #ffd600;
+      transform: scale(1.12);
+      z-index: 2;
+      outline: none;
+      box-shadow: 0 0 16px #ffd600bb;
+    }
+    button.option-btn.correct {
+      background: #d4f1d4;
+      border-color: #2eb82e;
+      color: #2b7700;
+      cursor: default;
+      box-shadow: 0 0 16px #2eb82ede;
+      transform: none !important;
+    }
+    button.option-btn.incorrect {
+      background: #f9d6d6;
+      border-color: #d13232;
+      color: #8f1c1c;
+      cursor: default;
+      box-shadow: 0 0 16px #d13232ee;
+      transform: none !important;
+    }
+    button.option-btn[disabled] { cursor: default; }
+    #feedback {
+      font-size: 1.22rem;
+      font-weight: 700;
+      min-height: 2.4rem;
+      margin-bottom: 28px;
+      text-align: center;
+      user-select: text;
+      transition: color 0.3s ease;
+      min-width: 100%;
+      letter-spacing: 0.02em;
+      line-height: 1.3;
+      word-break: break-word;
+      max-width: 480px;
+    }
+    #tip {
+      font-size: 1.02rem;
+      font-style: italic;
+      color: #3a6e8e;
+      margin-bottom: 28px;
+      min-height: 54px;
+      text-align: center;
+      user-select: text;
+      max-width: 460px;
+      line-height: 1.3;
+    }
+    #streak {
+      font-weight: 700;
+      color: #006400;
+      text-align: center;
+      margin-bottom: 28px;
+      font-size: 1.1rem;
+      letter-spacing: 0.03em;
+    }
+    #score-summary {
+      font-weight: 700;
+      font-size: 1.24rem;
+      text-align: center;
+      color: #183b56;
+      margin-top: 20px;
+      max-width: 520px;
+      white-space: pre-line;
+    }
+    #review-btn {
+      background: #4ca1af;
+      color: white;
+      border: none;
+      border-radius: 34px;
+      padding: 14px 36px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      letter-spacing: 0.06em;
+      box-shadow: 0 6px 18px #3b7b88cc;
+      transition: background 0.22s ease;
+      outline: none;
+      display: none;
+      margin: 0 auto 24px;
+      max-width: 220px;
+      text-align: center;
+    }
+    #review-btn:hover,
+    #review-btn:focus {
+      background: #3f8a96;
+      outline: none;
+    }
+    #next-btn {
+      background: #ffd600;
+      border: none;
+      border-radius: 38px;
+      color: #183b56;
+      padding: 15px 44px;
+      font-weight: 700;
+      font-size: 1.18rem;
+      cursor: pointer;
+      letter-spacing: 0.11em;
+      box-shadow: 0 7px 26px #d6c27444;
+      transition: background 0.24s, transform 0.16s;
+      user-select: none;
+      outline: none;
+      align-self: center;
+      min-width: 140px;
+      white-space: nowrap;
+    }
+    #next-btn:hover,
+    #next-btn:focus {
+      background: #ffec94;
+      outline: none;
+      transform: translateY(-2px) scale(1.08);
+      box-shadow: 0 12px 34px #d6c27488;
+    }
+    #timer {
+      margin-bottom: 20px;
+      font-weight: 700;
+      font-size: 1.32rem;
+      color: #183b56;
+      user-select: none;
+      min-height: 1.8rem;
+      letter-spacing: 0.015em;
+    }
+    #settings {
+      max-width: 600px;
+      margin: 0 auto 28px;
+      background: #fff;
+      border-radius: 32px;
+      padding: 14px 22px;
+      box-shadow: 0 7px 24px #b2b5ed33;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      color: #183b56;
+      gap: 14px;
+    }
+    #settings label {
+      font-weight: 700;
+      margin-right: 8px;
+      user-select: none;
+      font-size: 1rem;
+    }
+    #settings select, #settings input[type=checkbox] {
+      margin-right: 18px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    #settings .control-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      min-width: 180px;
+    }
+    @media (max-width: 600px) {
+      .options {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 16px;
+      }
+      button.option-btn {
+        font-size: 1.05rem;
+        padding: 14px 0;
+        letter-spacing: 0.07em;
+        max-width: none;
+      }
+      #sign-img { width: 80vw; max-width: 160px; height: auto; }
+      #next-btn, #review-btn {
+        min-width: 120px;
+        padding: 12px 28px;
+        font-size: 1.05rem;
+      }
+      #settings {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 12px 16px;
+      }
+      #settings .control-group {
+        margin-bottom: 6px;
+        min-width: auto;
+        width: 100%;
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>SignBridge Quiz</h1>
+    <p>Test your sign language knowledge through alphabets and common phrases!</p>
+  </header>
+
+  <section id="settings" aria-label="Quiz settings">
+    <div class="control-group">
+      <label for="quiz-type">Select quiz mode:</label>
+      <select id="quiz-type" aria-describedby="quiz-type-desc" aria-label="Quiz mode selection">
+        <option value="mixed">Mixed (Alphabets & Phrases)</option>
+        <option value="alphabet">Alphabets Only</option>
+        <option value="phrase">Phrases Only</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label for="timer-toggle">Enable timer:</label>
+      <input type="checkbox" id="timer-toggle" checked aria-label="Enable timer toggle"/>
+      <span id="quiz-type-desc" style="display:none;">Choose the quiz mode for the questions.</span>
+    </div>
+  </section>
+
+  <div class="quiz-container" role="main" aria-live="polite" aria-label="Sign language quiz">
+    <div class="progress-bar" aria-hidden="true" aria-label="Quiz progress">
+      <div class="progress-fill" style="width:0%"></div>
+    </div>
+    <div id="timer" aria-live="off" aria-atomic="false"></div>
+    <div id="question-label">What does this sign mean?</div>
+    <img id="sign-img" src="" alt="Sign illustration" />
+    <div class="options" role="list" aria-label="Multiple choice options"></div>
+    <div id="feedback" aria-live="assertive" aria-atomic="true"></div>
+    <div id="tip" aria-live="off"></div>
+    <div id="streak" aria-live="off"></div>
+    <button id="next-btn" type="button" disabled aria-disabled="true" aria-label="Next question">Next</button>
+    <button id="review-btn" type="button" aria-label="Review incorrect answers">Review Incorrect Answers</button>
+    <div id="score-summary" aria-live="polite" style="display:none;"></div>
+  </div>
+
+<script>
+  const alphabetImages = [
+    { letter: 'A', file: 'signs/a.jpg' },
+    { letter: 'B', file: 'signs/b.jpg' },
+    { letter: 'C', file: 'signs/c.jpg' },
+    { letter: 'D', file: 'signs/d1.jpg' },
+    { letter: 'E', file: 'signs/e.jpg' },
+    { letter: 'F', file: 'signs/f1.avif' },
+    { letter: 'G', file: 'signs/g.jpg' },
+    { letter: 'H', file: 'signs/H.jpg' },
+    { letter: 'I', file: 'signs/I.jpg' },
+    { letter: 'J', file: 'signs/J.jpg' },
+    { letter: 'K', file: 'signs/K.jpg' },
+    { letter: 'L', file: 'signs/l1.jpeg' },
+    { letter: 'M', file: 'signs/m.jpg' },
+    { letter: 'N', file: 'signs/N.jpg' },
+    { letter: 'O', file: 'signs/O.jpg' },
+    { letter: 'P', file: 'signs/P.jpg' },
+    { letter: 'Q', file: 'signs/Q.jpg' },
+    { letter: 'R', file: 'signs/r1.jpeg' },
+    { letter: 'S', file: 'signs/S.jpg' },
+    { letter: 'T', file: 'signs/T.jpg' },
+    { letter: 'U', file: 'signs/U.jpg' },
+    { letter: 'V', file: 'signs/V.jpg' },
+    { letter: 'W', file: 'signs/W.jpg' },
+    { letter: 'X', file: 'signs/X.jpg' },
+    { letter: 'Y', file: 'signs/Y.jpg' },
+    { letter: 'Z', file: 'signs/Z.jpg' },
+  ];
+
+  const phrases = [
+    { display: 'Sorry', file: 'phrase/sorry.jpg', tip: 'A circular motion over your chest shows regret.' },
+    { display: 'Goodbye', file: 'phrase/good.jpg', tip: 'Waving the hand outward symbolizes farewell.' },
+    { display: 'Hello', file: 'phrase/heloo.jpg', tip: 'Raised hand at side of head moving outward means greeting.' },
+    { display: 'Love', file: 'phrase/love.jpg', tip: 'Crossed arms over chest express affection.' },
+    { display: 'Thank you', file: 'phrase/thanks.jpg', tip: 'Hand from chin outward shows gratitude.' },
+    { display: 'No', file: 'phrase/no.jpg', tip: 'Pinching and snapping fingers indicate negation.' },
+    { display: 'Please', file: 'phrase/please.jpg', tip: 'Circular motion on chest conveys politeness.' },
+    { display: 'Yes', file: 'phrase/yes.jpg', tip: 'Nodding fist signals affirmation.' },
+    { display: 'House', file: 'phrase/house.jpg', tip: 'Hands make a roof shape to mean home.' },
+    { display: 'I love you', file: 'phrase/love you.jpg', tip: 'Extended thumb, index, and pinky fingers express affection.' },
+    { display: 'Family', file: 'phrase/family.jpg', tip: 'Hands form a circle representing connection.' },
+    { display: 'Welcome', file: 'phrase/welcome.jpg', tip: 'Palms up, moving inward means inviting.' }
+  ];
+
+  const totalQuestions = 10;
+  let quizData = [];
+  let currentIndex = 0;
+  let correctCount = 0;
+  let currentStreak = 0;
+  let maxStreak = 0;
+  let reviewMode = false;
+  let incorrectQuestions = [];
+
+  const progressFill = document.querySelector('.progress-fill');
+  const timerEl = document.getElementById('timer');
+  const questionLabel = document.getElementById('question-label');
+  const signImg = document.getElementById('sign-img');
+  const optionsContainer = document.querySelector('.options');
+  const feedback = document.getElementById('feedback');
+  const tip = document.getElementById('tip');
+  const streakEl = document.getElementById('streak');
+  const nextBtn = document.getElementById('next-btn');
+  const reviewBtn = document.getElementById('review-btn');
+  const scoreSummary = document.getElementById('score-summary');
+  const quizTypeSelect = document.getElementById('quiz-type');
+  const timerToggle = document.getElementById('timer-toggle');
+
+  let answered = false;
+  let timerId = null;
+  const timeLimit = 15;
+
+  function shuffle(arr) {
+    for(let i=arr.length-1; i>0; i--) {
+      const j = Math.floor(Math.random() * (i+1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+  }
+
+  function generateQuizData(mode) {
+    let data = [];
+    if(mode === 'alphabet' || mode === 'mixed') {
+      data.push(...alphabetImages.map(a => ({
+        type: 'alphabet',
+        answer: a.letter,
+        display: a.letter,
+        file: a.file,
+        tip: '' 
+      })));
+    }
+    if(mode === 'phrase' || mode === 'mixed') {
+      data.push(...phrases.map(p => ({
+        type: 'phrase',
+        answer: p.display,
+        display: p.display,
+        file: p.file,
+        tip: p.tip
+      })));
+    }
+    shuffle(data);
+    return data.slice(0, totalQuestions);
+  }
+
+  function generateOptions(correct, pool, key='display') {
+    const set = new Set([correct]);
+    while(set.size < 4) {
+      const opt = pool[Math.floor(Math.random()*pool.length)][key];
+      set.add(opt);
+    }
+    const options = Array.from(set);
+    shuffle(options);
+    return options;
+  }
+
+  function updateProgress() {
+    let percent = ((currentIndex+1)/quizData.length) * 100;
+    progressFill.style.width = `${percent}%`;
+  }
+
+  function updateStreak(isCorrect) {
+    if(isCorrect) {
+      currentStreak++;
+      if(currentStreak > maxStreak) maxStreak = currentStreak;
+    } else {
+      currentStreak = 0;
+    }
+    streakEl.textContent = currentStreak > 1 ? `Streak: ${currentStreak} ✓` : '';
+  }
+
+  function startTimer() {
+    if(timerId) clearInterval(timerId);
+    if(!timerToggle.checked) {
+      timerEl.textContent = '';
+      return;
+    }
+    let timeLeft = timeLimit;
+    timerEl.textContent = `Time left: ${timeLeft}s`;
+    timerId = setInterval(() => {
+      timeLeft--;
+      if(timeLeft <= 0) {
+        clearInterval(timerId);
+        timerEl.textContent = 'Time is up!';
+        if(!answered) autoFailQuestion();
+      } else {
+        timerEl.textContent = `Time left: ${timeLeft}s`;
+      }
+    }, 1000);
+  }
+
+  function autoFailQuestion() {
+    answered = true;
+    nextBtn.disabled = false;
+    feedback.style.color = '#8f1c1c';
+    feedback.textContent = `Time's up! The correct answer was "${quizData[currentIndex].answer}".`;
+    tip.textContent = quizData[currentIndex].tip || '';
+    [...optionsContainer.children].forEach(btn => {
+      btn.disabled = true;
+      btn.setAttribute('aria-pressed', 'false');
+      if(btn.textContent === quizData[currentIndex].answer) btn.classList.add('correct');
+    });
+    currentStreak = 0;
+    updateStreak(false);
+    incorrectQuestions.push(quizData[currentIndex]);
+  }
+
+  function renderQuestion() {
+    answered = false;
+    feedback.textContent = '';
+    tip.textContent = '';
+    nextBtn.disabled = true;
+    optionsContainer.innerHTML = '';
+    scoreSummary.style.display = 'none';
+    reviewBtn.style.display = 'none';
+    timerEl.textContent = '';
+    streakEl.textContent = '';
+    signImg.style.display = '';
+
+    updateProgress();
+
+    if (currentIndex >= quizData.length) {
+      showResults();
+      return;
+    }
+
+    const q = quizData[currentIndex];
+    signImg.src = q.file;
+    signImg.alt = q.type === 'alphabet' ?
+      `Hand sign for letter ${q.display}` :
+      `Hand sign for ${q.display}`;
+    questionLabel.textContent = q.type === 'alphabet' ? 'Which letter is this?' : 'What does this sign mean?';
+
+    const pool = q.type === 'alphabet' ? alphabetImages : phrases;
+    const key = q.type === 'alphabet' ? 'letter' : 'display';
+    const options = generateOptions(q.answer, pool, key);
+
+    options.forEach(text => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'option-btn';
+      btn.textContent = text;
+      btn.setAttribute('aria-pressed', 'false');
+      btn.setAttribute('role', 'button');
+      btn.tabIndex = 0;
+
+      btn.addEventListener('click', () => {
+        if(answered) return;
+
+        answered = true;
+        nextBtn.disabled = false;
+        clearInterval(timerId);
+        timerEl.textContent = '';
+
+        if(text === q.answer) {
+          btn.classList.add('correct');
+          feedback.style.color = '#2b7700';
+          feedback.textContent = 'Correct!';
+          updateStreak(true);
+          correctCount++;
+        } else {
+          btn.classList.add('incorrect');
+          feedback.style.color = '#8f1c1c';
+          feedback.textContent = `Incorrect! The correct answer was "${q.answer}".`;
+          updateStreak(false);
+          incorrectQuestions.push(q);
+          [...optionsContainer.children].forEach(cBtn => {
+            if(cBtn.textContent === q.answer) cBtn.classList.add('correct');
+          });
+        }
+        tip.textContent = q.tip || '';
+        [...optionsContainer.children].forEach(cBtn => {
+          cBtn.disabled = true;
+          cBtn.setAttribute('aria-pressed', 'false');
+        });
+        btn.setAttribute('aria-pressed', 'true');
+      });
+      btn.addEventListener('keyup', (e) => {
+        if(e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          btn.click();
+        }
+      });
+      optionsContainer.appendChild(btn);
+    });
+
+    startTimer();
+  }
+
+  function showResults() {
+    questionLabel.textContent = 'Quiz Complete!';
+    signImg.style.display = 'none';
+    optionsContainer.style.display = 'none';
+    nextBtn.style.display = 'none';
+    timerEl.textContent = '';
+    tip.textContent = '';
+    streakEl.textContent = '';
+    feedback.textContent = '';
+    scoreSummary.style.display = 'block';
+    reviewBtn.style.display = incorrectQuestions.length ? 'inline-block' : 'none';
+
+    scoreSummary.textContent =
+      `You scored ${correctCount} out of ${quizData.length} questions.\n` +
+      `Max streak: ${maxStreak} ✓`;
+  }
+
+  let reviewIndex = 0;
+  function startReview() {
+    if (incorrectQuestions.length === 0) return;
+    reviewIndex = 0;
+    reviewBtn.style.display = 'none';
+    scoreSummary.style.display = 'none';
+    nextBtn.style.display = 'inline-block';
+    nextBtn.textContent = 'Next Review';
+    signImg.style.display = '';
+    optionsContainer.style.display = '';
+    questionLabel.textContent = 'Review: What does this sign mean?';
+    tip.textContent = '';
+    feedback.textContent = '';
+    timerEl.textContent = '';
+
+    displayReviewQuestion();
+  }
+
+  function displayReviewQuestion() {
+    const q = incorrectQuestions[reviewIndex];
+    signImg.src = q.file;
+    signImg.alt = q.type === 'alphabet' ?
+      `Hand sign for letter ${q.display}` :
+      `Hand sign for ${q.display}`;
+
+    optionsContainer.innerHTML = '';
+    let correctBtn = document.createElement('button');
+    correctBtn.className = 'option-btn correct';
+    correctBtn.disabled = true;
+    correctBtn.textContent = q.answer;
+    optionsContainer.appendChild(correctBtn);
+
+    feedback.textContent = 'Correct answer';
+    feedback.style.color = '#2b7700';
+    tip.textContent = q.tip || '';
+  }
+
+  nextBtn.addEventListener('click', () => {
+    if (!(currentIndex < quizData.length)) {
+      reviewIndex++;
+      if (reviewIndex >= incorrectQuestions.length) { location.reload(); return; }
+      displayReviewQuestion();
+      return;
+    }
+    currentIndex++;
+    if(currentIndex >= quizData.length) {
+      showResults();
+    } else {
+      renderQuestion();
+    }
+  });
+
+  reviewBtn.addEventListener('click', () => {
+    currentIndex = quizData.length;
+    startReview();
+  });
+
+  quizTypeSelect.addEventListener('change', restartQuiz);
+  timerToggle.addEventListener('change', () => {
+    if (timerId) clearInterval(timerId);
+    timerEl.textContent = '';
+  });
+
+  function restartQuiz(){
+    currentIndex = 0;
+    correctCount = 0;
+    maxStreak = 0;
+    currentStreak = 0;
+    incorrectQuestions = [];
+    reviewMode = false;
+    nextBtn.style.display = 'inline-block';
+    nextBtn.textContent = 'Next';
+    signImg.style.display = '';
+    optionsContainer.style.display = '';
+    scoreSummary.style.display = 'none';
+    reviewBtn.style.display = 'none';
+    renderQuiz();
+  }
+
+  function renderQuiz() {
+    quizData = generateQuizData(quizTypeSelect.value);
+    renderQuestion();
+  }
+
+  restartQuiz();
+</script>
+</body>
+</html>

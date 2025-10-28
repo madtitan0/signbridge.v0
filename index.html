@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SignBridge | Welcome</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f2f2ff;
+      color: #232021;
+    }
+    /* Top right fixed menu */
+    .top-right-menu {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      z-index: 1000;
+      font-size: 0.95rem;
+    }
+    .top-right-menu a {
+      background: transparent;
+      border: none;
+      color: #183b56;
+      text-decoration: none;
+      padding: 7px 14px;
+      border-radius: 10px;
+      transition: background 0.2s, color 0.2s;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .top-right-menu a:hover {
+      background: #d9e9f7;
+      color: #0f2a46;
+    }
+    .top-right-menu a.btn-primary {
+      background: #ffd600;
+      color: #222;
+      padding: 12px 28px;
+      border-radius: 50px;
+      box-shadow: 0 7px 22px #d6c27444;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      font-size: 1rem;
+      text-decoration: none;
+      border: none;
+      transition: background 0.21s, color 0.21s, transform 0.16s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .top-right-menu a.btn-primary:hover {
+      background: #ffec94;
+      color: #313131;
+      transform: translateY(-2px) scale(1.04);
+    }
+
+    .main-hero {
+      background: linear-gradient(120deg, #4ca1af 0%, #c4e0e5 100%);
+      border-bottom-left-radius: 60px;
+      border-bottom-right-radius: 60px;
+      min-height: 370px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 55px 18px 40px 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-content {
+      max-width: 960px;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hero-info {
+      flex: 2;
+      text-align: left;
+    }
+    .hero-title {
+      font-size: 2.7rem;
+      line-height: 1.08;
+      font-weight: bold;
+      color: #183b56;
+      margin-bottom: 14px;
+    }
+    .hero-sub {
+      color: #284774;
+      font-size: 1.23rem;
+      margin-bottom: 26px;
+      letter-spacing: 0.01em;
+    }
+    .hero-btn-group {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+    .hero-btn {
+      display: inline-block;
+      background: #ffd600;
+      color: #222;
+      font-weight: 600;
+      letter-spacing: .03em;
+      font-size: 1.12rem;
+      padding: 15px 34px;
+      border-radius: 38px;
+      box-shadow: 0 7px 22px #d6c27444;
+      border: none;
+      text-decoration: none;
+      transition: background 0.21s, color 0.21s, transform 0.16s;
+      cursor: pointer;
+    }
+    .hero-btn:hover {
+      background: #ffec94;
+      color: #313131;
+      transform: translateY(-2px) scale(1.04);
+    }
+    .hero-imgs {
+      flex: 1.1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      justify-content: center;
+    }
+    .circle-img {
+      width: 125px;
+      height: 125px;
+      border-radius: 50%;
+      box-shadow: 0 0 0 7px #ffd60033;
+      object-fit: cover;
+      background: #fff9db;
+      display: block;
+    }
+    .hero-imgs .circle-img:last-child {
+      align-self: flex-end;
+      background: #e7f8ff;
+      box-shadow: 0 0 0 7px #83d6f733;
+    }
+    /* Difficulties Library Section */
+    .difficulties-section {
+      margin: 52px auto 38px auto;
+      background: #fff;
+      border-radius: 30px;
+      box-shadow: 0 7px 40px #b2b5ed22;
+      max-width: 1150px;
+      padding: 38px 30px 34px 30px;
+    }
+    .difficulties-section h2 {
+      color: #2e6c8c;
+      text-align: center;
+      font-size: 1.7rem;
+      margin-bottom: 36px;
+      letter-spacing: 0.015em;
+    }
+    .difficulties-library {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
+      gap: 38px 32px;
+      max-width: 1200px;
+      margin: 0 auto 5px auto;
+      padding: 0 10px;
+    }
+    .difficulty-lib-card {
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: 0 8px 32px #425c7a16;
+      padding: 32px 30px 28px 30px;
+      border-left: 6px solid #ffd600;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 335px;
+      transition: box-shadow 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+    .difficulty-lib-card:hover, .difficulty-lib-card:active {
+      box-shadow: 0 16px 48px #109fdc48;
+      transform: translateY(-10px) scale(1.1);
+      z-index: 2;
+    }
+    .difficulty-img {
+      width: 300px;
+      height: 200px;
+      border-radius: 14px;
+      object-fit: cover;
+      background: #f3f7fc;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px #ffd60033;
+      display: block;
+    }
+    .difficulty-lib-card h3 {
+      margin: 0 0 13px 0;
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: #287ac6;
+      line-height: 1.2;
+      text-align: center;
+    }
+    .difficulty-lib-card p {
+      color: #474f599a;
+      font-size: 1.08rem;
+      margin: 0;
+      flex: 1;
+      text-align: center;
+    }
+    @media (max-width: 700px) {
+      .difficulties-library { grid-template-columns: 1fr; }
+      .difficulty-img { width: 96vw; height: 165px; }
+    }
+    footer {
+      margin: 49px 0 16px 0;
+      color: #84a1b7;
+      font-size: .95rem;
+      text-align: center;
+    }
+    @media (max-width: 970px) {
+      .hero-content { flex-direction: column; align-items: flex-start; gap: 28px;}
+      .main-hero { min-height: unset; padding-bottom: 26px;}
+      .hero-imgs { flex-direction: row; gap: 14px;}
+    }
+    @media (max-width: 570px) {
+      .main-hero,
+      .difficulties-section { padding: 18px 7vw !important;}
+      .hero-title { font-size: 2rem; }
+      .circle-img { width: 79px; height: 79px;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Top right fixed menu -->
+  <nav class="top-right-menu" aria-label="Main Navigation">
+    <a href="#services" tabindex="0">Our Services</a>
+    <a href="#about" tabindex="0">About Us</a>
+    <a href="#support" tabindex="0">Get Support</a>
+    <a href="login.html" class="btn-primary" tabindex="0">Login</a>
+    <a href="signup.html" class="btn-primary" tabindex="0">Sign Up</a>
+  </nav>
+
+  <!-- Hero Banner -->
+  <section class="main-hero">
+    <div class="hero-content">
+      <div class="hero-info">
+        <div class="hero-title">Start Your Sign Language Journey Here</div>
+        <div class="hero-sub">Interactive learning and live translation—designed for bridging communication gaps.</div>
+        <div class="hero-btn-group">
+          <a href="index2.html" class="hero-btn">Start Learning</a>
+          <a href="translate.html" class="hero-btn">Live Translate</a>
+        </div>
+      </div>
+      <div class="hero-imgs">
+        <img src="images/girl.png" alt="Signing Person 1" class="circle-img" />
+        <img src="images/boyy.png" alt="Signing Person 2" class="circle-img" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Difficulties Library Section -->
+  <section class="difficulties-section" id="services">
+    <h2>Challenges Addressed by SignBridge</h2>
+    <div class="difficulties-library">
+      <div class="difficulty-lib-card">
+        <img src="images/box1.png" alt="No Real-Time Communication" class="difficulty-img"/>
+        <h3>No Real-Time Communication</h3>
+        <p>Users struggled to have spontaneous conversations between signers and non-signers, leading to social gaps and dependence on interpreters.</p>
+      </div>
+      <div class="difficulty-lib-card">
+        <img src="images/box2.png" alt="Static and Boring Learning" class="difficulty-img"/>
+        <h3>Static and Boring Learning</h3>
+        <p>Most tools offered only basic, text-based content—lacking video, animation, or gamification—making progress slow and engagement minimal.</p>
+      </div>
+      <div class="difficulty-lib-card">
+        <img src="images/box3.png" alt="One-Way Translation" class="difficulty-img"/>
+        <h3>One-Way Translation</h3>
+        <p>Existing apps usually convert sign to text or just text to sign—very few support interactive, bidirectional conversations for real-world needs.</p>
+      </div>
+      <div class="difficulty-lib-card">
+        <img src="images/box4.png" alt="Poor Accessibility Support" class="difficulty-img"/>
+        <h3>Poor Accessibility Support</h3>
+        <p>Little to no support for users with additional needs (such as visual, cognitive challenges, or multilingual requirements), making access limited.</p>
+      </div>
+      <div class="difficulty-lib-card">
+        <img src="images/box6.png" alt="Lack of Practical Phrases" class="difficulty-img"/>
+        <h3>Lack of Practical Phrases</h3>
+        <p>Daily conversation and essential phrases were missing from most resources, making it hard to use sign language confidently in real-life scenarios.</p>
+      </div>
+      <div class="difficulty-lib-card">
+        <img src="images/box7.png" alt="No Feedback or Motivation" class="difficulty-img"/>
+        <h3>No Feedback or Motivation</h3>
+        <p>Apps didn’t provide progress tracking, quizzes, or practical feedback—many learners lost momentum early or felt unsupported.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 SignBridge | Empowering Communication for All
+  </footer>
+</body>
+</html>
